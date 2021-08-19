@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        /* *{
+            margin:0px;
+            padding:0px;
+        } */
+        body{
+            background-image: linear-gradient(to right,#606c88,#3f4c6b); */
+            /* background-color: black; */
+        }
+        div {
+            color: white;
+            font-size: 22px;
+            font-family: calibri;
+            margin: 20px 20px;
+        }
+
+        table {
+            font-size: 16px;
+            font-family: calibri;
+        }
+
+        #right_side_table {
+            margin-top: 2%;
+            margin-left:35%;
+            width:800px;
+            /* text-align:center; */
+            background-color: white;
+            color:black;
+        }
+        tr:nth-child(even) {  
+            background-color: lightblue;  
+        } 
+        #add,#clear {
+            background-color: #008CBA;
+            border: none;
+            color: white;
+            padding: 10px 26px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius:5px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div style="display:inline-block;position:fixed">
+        <table id="right_side_table" cellspacing=0; cellpadding=10; style="position:fixed;" >
+            <tr style="text-align: center;;font-size:22px;background-color:#008CBA;color:white">
+                <td>Id</td>
+                <td>Title</td>
+                <td>Description</td>
+                <td>Action</td>
+            </tr>
+            <tbody id="tableBody">
+                <tr>
+                    <td>1</td>
+                    <td>You should call your parent daily</td>
+                    <td>This is working great</td>
+                    <td><button type="del" id ="del">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display:inline-block;">
+        <div> Title:<br>
+            <hr>
+            <textarea id="title" type="text"
+                style="width:400px;resize:none;font-size:18px;border-radius:5px"></textarea>
+
+        </div>
+        <div> Description:<br>
+            <hr>
+            <textarea id="description" style="resize:none;width:400px;height:100px;border-radius:5px;font-size:18px "
+                type="text"></textarea>
+        </div>
+
+        <div style="margin-left:25%;">
+            <button id="add">Add</button>
+            <button id ="clear" onclick="clearStorage()">Clear List</button>
+        </div>
+    </div>
+    <script>
+        function getAndUpdate() {
+            console.log("Updating List...");
+            tit = document.getElementById('title').value;
+            desc = document.getElementById('description').value;
+            if (localStorage.getItem('itemsJson') == null) {
+                itemJsonArray = [];
+                itemJsonArray.push([tit, desc]);
+                localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray))
+            }
+            else {
+                itemJsonArrayStr = localStorage.getItem('itemsJson')
+                itemJsonArray = JSON.parse(itemJsonArrayStr);
+                itemJsonArray.push([tit, desc]);
+                localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray))
+            }
+            update();
+        }
+
+        function update() {
+            if (localStorage.getItem('itemsJson') == null) {
+                itemJsonArray = [];
+                localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray))
+            }
+            else {
+                itemJsonArrayStr = localStorage.getItem('itemsJson')
+                itemJsonArray = JSON.parse(itemJsonArrayStr);
+            }
+            // Populate the table
+            let tableBody = document.getElementById("tableBody");
+            let str = "";
+            itemJsonArray.forEach((element, index) => {
+                str += `
+                    <tr>
+                    <td scope="row">${index + 1}</td>
+                    <td style="">${element[0]}</td>
+                    <td style="font-style:italic;width:450px;text-align:justify">${element[1]}</td> 
+                    <td><button class="btn btn-sm btn-primary" style='background-color:#008CBA;padding:8px;;border-radius:5px;color:white;' onclick="deleted(${index})">Delete</button></td> 
+                    </tr>`;
+            });
+            tableBody.innerHTML = str;
+        }
+        add = document.getElementById("add");
+        add.addEventListener("click", getAndUpdate);
+        update();
+        function deleted(itemIndex) {
+            console.log("Delete", itemIndex);
+            itemJsonArrayStr = localStorage.getItem('itemsJson')
+            itemJsonArray = JSON.parse(itemJsonArrayStr);
+            // Delete itemIndex element from the array
+            itemJsonArray.splice(itemIndex, 1);
+            localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray));
+            update();
+
+        }
+        function clearStorage() {
+            if (confirm("Do you areally want to clear?")) {
+                console.log('Clearing the storage')
+                localStorage.clear();
+                update()
+            }
+        }
+    </script>
+</body>
+
+</html>

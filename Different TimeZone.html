@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    *{
+        margin:0px;
+        padding:0px;
+    }
+    body{
+        background-image: linear-gradient(to right,#1A2980,#26D0CE);
+        color:white;
+    }
+    .container{
+        margin: 20px 20px 20px 20px;
+        height:auto;
+        width:800px;
+        font-size:38px;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border:2px solid grey;
+        padding:20px;
+        border-radius:10px;
+        letter-spacing: 1px;
+        font-weight:bold;
+    }
+    label,#country,#info{
+        font-size:22px;
+        font-family:calibri;
+        margin: 20px 20px 20px 20px;
+    }
+    a{
+        color:white;
+    }
+</style>
+
+<script>
+
+function myFunction(){
+    var e = document.getElementById("country").value;
+    var a;
+    var date;
+    var time;
+    const options = { weekday : 'long' , year: 'numeric', month :'long',day:'numeric'};
+   // setInterval(() => {
+        a =new Date();
+        date = a.toLocaleTimeString(e,options);
+        time = a.getHours() + ':' + a.getMinutes()+':' +a.getSeconds();
+        document.getElementById('time').innerHTML = time + "<br>" + date;
+    //},5000);
+}
+</script>
+<body>
+<div id= "info" style="">To get more details on date function refer :
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toDateString">Click Here</a><br>
+    Change locale of toLocaleTimeString from :
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleTimeString">Click Here</a>
+    </div>
+
+
+<label>Choose language</label>
+<select id="country" onchange="myFunction()">
+  <option value="ja-JP-u-ca-japanese">Chinese</option>
+  <option value="en-US">US</option>
+  <option value="en-GB">Great Britain</option>
+  <option value="ko-KR">Korean</option>
+  <option value="ar-EG">Arabic</option>
+ </select>
+
+
+
+<div class="container">
+    Current Time is : <span id="time"></span>
+</div>
+
+    
+</body>
+</html>
